@@ -16,7 +16,6 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  max-width: 600px;
   margin:0 auto;
 }
 
@@ -31,5 +30,14 @@
 
 #nav a.router-link-exact-active {
   color: #42b983;
+}
+
+  ul {
+  list-style-type: none;
+  padding: 0;
+  text-align: left;
+}
+li {
+  margin: 5px 10px;
 }
 </style>

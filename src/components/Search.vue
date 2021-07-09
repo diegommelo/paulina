@@ -9,45 +9,22 @@
       <div v-if="isLoading" class="loading">
         Buscando...
       </div>
-      <div v-else>
-        <div class="info">
-          <img :src="response.Poster" class="poster" />
-          <div class="description">
-            <h2>{{response.Title}}</h2>
-            <p>{{response.Plot}}</p>
-            <ul>
-              <li><strong>Tipo: </strong>{{response.Type}}</li>
-              <li><strong>Direção: </strong>{{response.Director}}</li>
-              <li><strong>Escritor: </strong>{{response.Writer}}</li>
-              <li><strong>Ano: </strong>{{response.Year}}</li>
-              <li><strong>Elenco: </strong>{{response.Actors}}</li>
-              <li v-if="response.totalSeasons"><strong>Temporadas: </strong>{{response.totalSeasons}}</li>
-            </ul>
-          </div>
-        </div>
-        <div class="ratings-wrapper">
-          <ul class="ratings">
-            <li v-for="rating in response.Ratings" :key="rating.Year">
-              <h4>
-                <span v-if="rating.Source == 'Internet Movie Database'">IMDB</span>
-                <span v-else>{{rating.Source}}</span>
-              </h4>
-              <h3>{{rating.Value}}</h3>
-            </li>
-          </ul>
-        </div>
-      </div>
+      <Results :data="response" />
     </div>
   </div>
 </template>
 
 <script>
-import {searchByName} from '@/api.js'
+import {searchByNameTMDB} from '@/api.js'
+import Results from '@/components/Results'
 
 export default {
   name: 'Search',
   props: {
     msg: String
+  },
+  components: {
+    Results
   },
   data() {
     return {
@@ -62,9 +39,9 @@ export default {
       if(this.search != "") {
         this.error = false
         this.isLoading = true
-        searchByName(this.search).then(resp => {
+        searchByNameTMDB(this.search).then(resp => {
           console.log(resp)
-           if(resp.Response === "False") {
+           if(resp.results.length < 0) {
              this.error = true
              this.isLoading = false
            } else {
@@ -82,25 +59,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.info {
-  display:flex;
-  padding:10px;
-  margin-top:20px;
-}
-.description {
-  padding:10px;
-}
-.poster {
-  max-width:180px;
-}
-.ratings-wrapper {
-  display: flex;
-  justify-content: center;
-}
-.ratings li{
-  display: inline-block;
-  text-align: center;
-}
 .not-found {
   margin-top:20px;
 }
